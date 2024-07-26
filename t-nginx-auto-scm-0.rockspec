@@ -28,7 +28,8 @@ test_dependencies = {
 }
 
 test = {
-  type = "busted",
+  type = "command",
+  command = "prove",
 }
 
 build = {

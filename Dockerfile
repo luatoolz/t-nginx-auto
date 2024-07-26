@@ -14,13 +14,12 @@ RUN apt update -y && apt install -y \
 
 FROM builder1 AS builder2
 
-RUN cpanm Test::Nginx::Socket::Lua
-RUN cpanm https://github.com/luatoolz/App-Prove-Plugin-NginxModules.git
-
+RUN cpanm Test::Nginx::Socket::Lua https://github.com/luatoolz/App-Prove-Plugin-NginxModules.git
 RUN luarocks config --scope system lua_dir /usr
 
 FROM builder2 AS soft
 
+RUN luarocks install --deps-mode all --only-deps --dev t-nginx-auto
 RUN luarocks install --dev t-nginx-auto
 
 FROM scratch
