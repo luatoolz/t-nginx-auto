@@ -33,8 +33,6 @@ jobs:
       run: sudo systemctl disable nginx && sudo systemctl stop nginx && sudo chmod 666 /var/log/nginx/*
     - name: cpanm dependencies
       run: sudo cpanm ${{ env.CPANDEPS }}
-    - name: test deps
-      run: luarocks test --prepare ${{ env.DEV }}
     - name: dependencies
       run: luarocks install --deps-mode all --only-deps ${{ env.DEV }} ${{ env.ROCKSPEC }}
     - name: build
