@@ -1,0 +1,40 @@
+name: test
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.lua'
+      - '**.t'
+      - '**.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        luaVersion: ["5.1", "5.2", "5.3", "luajit", "luajit-openresty"]
+    env:
+      SYSDEPS: build-essential make cmake git nginx libnginx-mod-http-lua cpanminus ca-certificates curl
+      CPANDEPS: Test::Nginx::Socket::Lua https://github.com/luatoolz/App-Prove-Plugin-NginxModules.git
+      ROCKSPEC: ${{ github.event.repository.name }}-scm-0.rockspec
+    steps:
+    - uses: actions/checkout@master
+    - uses: leafo/gh-actions-lua@v10
+      with:
+        luaVersion: ${{ matrix.luaVersion }}
+    - uses: leafo/gh-actions-luarocks@v4
+
+    - name: system dependencies
+      run: sudo apt update -y && sudo apt install -y ${{ env.SYSDEPS }}
+    - name: cpanm dependencies
+      run: sudo cpanm ${{ env.CPANDEPS }}
+    - name: test deps
+      run: luarocks test --prepare
+    - name: dependencies
+      run: luarocks install --deps-mode all --only-deps --dev ${{ env.ROCKSPEC }}
+    - name: build
+      run: luarocks build --deps-mode all ${{ env.ROCKSPEC }}
+    - name: test
+      run: luarocks test
