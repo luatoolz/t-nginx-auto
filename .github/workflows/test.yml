@@ -33,6 +33,10 @@ jobs:
       run: sudo systemctl disable nginx && sudo systemctl stop nginx && sudo chmod 666 /var/log/nginx/*
     - name: cpanm dependencies
       run: sudo cpanm ${{ env.CPANDEPS }}
+    - name: show installed liblua
+      run: sudo apt search liblua | grep ^liblua | grep dev && apt search lua5. | grep ^lua5.
+    - name: luarocks config
+      run: luarocks config; luarocks config --scope system lua_dir /usr
     - name: dependencies
       run: luarocks install --deps-mode all --only-deps ${{ env.DEV }} ${{ env.ROCKSPEC }}
     - name: build
