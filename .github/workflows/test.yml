@@ -25,16 +25,12 @@ jobs:
       with:
         luaVersion: ${{ matrix.luaVersion }}
     - uses: leafo/gh-actions-luarocks@v4
-    - name: apt update
-      run: sudo apt-get update
-    - name: show deps
-      run: sudo apt search nginx | grep lua
     - name: system dependencies
-      run: sudo apt-get install -y ${{ env.SYSDEPS }} && sudo systemctl disable nginx && sudo systemctl stop nginx
+      run: sudo apt-get update && sudo apt-get install -y ${{ env.SYSDEPS }}
+    - name: disable system nginx
+      run: sudo systemctl disable nginx && sudo systemctl stop nginx
     - name: cpanm dependencies
       run: sudo cpanm ${{ env.CPANDEPS }}
-    - name: test deps
-      run: luarocks test --prepare
     - name: dependencies
       run: luarocks install --deps-mode all --only-deps --dev ${{ env.ROCKSPEC }}
     - name: build
