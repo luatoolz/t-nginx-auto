@@ -16,7 +16,7 @@ jobs:
       matrix:
         luaVersion: ["5.1", "5.2", "5.3", "luajit", "luajit-openresty"]
     env:
-      SYSDEPS: build-essential make cmake git nginx libnginx-mod-http-lua cpanminus ca-certificates curl
+      SYSDEPS: build-essential make cmake git nginx cpanminus curl libssl-dev ssl-cert
       CPANDEPS: Test::Nginx::Socket::Lua https://github.com/luatoolz/App-Prove-Plugin-NginxModules.git
       ROCKSPEC: ${{ github.event.repository.name }}-scm-0.rockspec
     steps:
@@ -25,9 +25,12 @@ jobs:
       with:
         luaVersion: ${{ matrix.luaVersion }}
     - uses: leafo/gh-actions-luarocks@v4
-
+    - name: apt update
+      run: sudo apt-get update
+    - name: show deps
+      run: sudo apt-get search nginx | grep lua
     - name: system dependencies
-      run: sudo apt update -y && sudo apt install -y ${{ env.SYSDEPS }}
+      run: sudo apt-get install -y ${{ env.SYSDEPS }} && sudo systemctl disable nginx && sudo systemctl stop nginx
     - name: cpanm dependencies
       run: sudo cpanm ${{ env.CPANDEPS }}
     - name: test deps
