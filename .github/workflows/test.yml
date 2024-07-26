@@ -28,7 +28,7 @@ jobs:
     - name: apt update
       run: sudo apt-get update
     - name: show deps
-      run: sudo apt-get search nginx | grep lua
+      run: sudo apt search nginx | grep lua
     - name: system dependencies
       run: sudo apt-get install -y ${{ env.SYSDEPS }} && sudo systemctl disable nginx && sudo systemctl stop nginx
     - name: cpanm dependencies
