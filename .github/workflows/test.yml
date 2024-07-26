@@ -17,7 +17,7 @@ jobs:
         luaVersion: ["5.1", "5.2", "5.3", "luajit", "luajit-openresty"]
     env:
       SYSDEPS: build-essential make cmake git nginx-extras cpanminus curl libssl-dev ssl-cert
-      CPANDEPS: Test::Nginx::Socket::Lua https://github.com/luatoolz/App-Prove-Plugin-NginxModules.git
+      CPANDEPS: Test::Nginx::Socket::Lua
       ROCKSPEC: ${{ github.event.repository.name }}-scm-0.rockspec
     steps:
     - uses: actions/checkout@master
@@ -28,7 +28,7 @@ jobs:
     - name: system dependencies
       run: sudo apt-get update && sudo apt-get install -y ${{ env.SYSDEPS }}
     - name: disable system nginx
-      run: sudo systemctl disable nginx && sudo systemctl stop nginx
+      run: sudo systemctl disable nginx && sudo systemctl stop nginx && sudo chmod 666 /var/log/nginx/*
     - name: cpanm dependencies
       run: sudo cpanm ${{ env.CPANDEPS }}
     - name: dependencies
