@@ -10,14 +10,14 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         luaVersion: ["5.1", "5.2", "5.3", "luajit", "luajit-openresty"]
     env:
-      SYSDEPS: build-essential make cmake git nginx-extras cpanminus curl libssl-dev ssl-cert
-      CPANDEPS: Test::Nginx::Socket::Lua
+      SYSDEPS: build-essential make cmake git libnginx-mod-http-lua cpanminus curl libssl-dev ssl-cert
+      CPANDEPS: Test::Nginx::Socket::Lua https://github.com/luatoolz/App-Prove-Plugin-NginxModules.git
       ROCKSPEC: ${{ github.event.repository.name }}-scm-0.rockspec
     steps:
     - uses: actions/checkout@master
