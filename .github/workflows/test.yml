@@ -16,7 +16,7 @@ jobs:
       matrix:
         luaVersion: ["5.1", "5.2", "5.3", "luajit", "luajit-openresty"]
     env:
-      SYSDEPS: build-essential make cmake git nginx cpanminus curl libssl-dev ssl-cert
+      SYSDEPS: build-essential make cmake git nginx-extras cpanminus curl libssl-dev ssl-cert
       CPANDEPS: Test::Nginx::Socket::Lua https://github.com/luatoolz/App-Prove-Plugin-NginxModules.git
       ROCKSPEC: ${{ github.event.repository.name }}-scm-0.rockspec
     steps:
