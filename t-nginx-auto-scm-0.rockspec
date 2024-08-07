@@ -26,6 +26,7 @@ dependencies = {
 test_dependencies = {
   "busted",
   "luacheck",
+  "inspect",
 }
 
 test = {
