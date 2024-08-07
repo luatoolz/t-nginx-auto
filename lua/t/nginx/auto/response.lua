@@ -14,6 +14,10 @@ local api = {
     if type(r)=='number' then ngx.say(tostring(r)); return ngx.exit(200) end
     if type(r)=='string' then if r~='' then ngx.say(r) end; return ngx.exit(200) end
     if type(r)=='table' then
+      local inspect = require "inspect"
+      ngx.log(ngx.NOTICE, ' GET.r=' .. inspect(r))
+--      r=json(r)
+--      assert(type(r)=='table')
       ngx.say(json.encode(r))
       return ngx.exit(200)
     end
