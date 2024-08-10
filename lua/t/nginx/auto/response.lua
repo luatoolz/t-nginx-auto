@@ -45,5 +45,5 @@ return function(r)
 	local method = api[ngx.var.request_method]
 	if type(method)=='string' then method=api[method] end
 	if not is.callable(method) then return ngx.exit(500) end
-	return method(r)
+	return method and method(r) or nil
 end
