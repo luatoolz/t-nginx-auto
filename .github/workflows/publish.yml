@@ -18,10 +18,10 @@ jobs:
     - uses: actions/checkout@master
     - uses: jkl1337/gh-actions-lua@v11
       with:
-        luaVersion: "5.1"
+        luaVersion: "5.1.5"
     - uses: jkl1337/gh-actions-luarocks@v5
     - name: system dependencies
-      run: sudo apt-get update && sudo apt-get install -y ${{ env.SYSDEPS }}
+      run: sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y ${{ env.SYSDEPS }}
     - name: install upload deps
       run: luarocks install lua-cjson && luarocks install luasec
     - name: publish
