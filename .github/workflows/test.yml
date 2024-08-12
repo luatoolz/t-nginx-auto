@@ -6,7 +6,7 @@ on:
     paths:
       - '**.lua'
       - '**.t'
-      - '**.yml'
+      - '**test.yml'
       - '**.rockspec'
   workflow_dispatch:
 jobs:
