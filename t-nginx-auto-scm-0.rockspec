@@ -19,8 +19,8 @@ t.nginx.auto: nginx auto req/resp object interface for `t` lib
 
 dependencies = {
   "lua >= 5.1",
-  "t",
   "t-format-json",
+  "t",
 }
 
 test_dependencies = {
