@@ -6,6 +6,7 @@ local ngx = ngx
 local t = require "t"
 local is = t.is
 local json = t.format.json
+local inspect = require "inspect"
 
 local api = {
   GET=function(r)
@@ -20,7 +21,7 @@ local api = {
       return ngx.exit(200)
     end
     if type(r) == 'table' then
-      if (not is.array(r)) and getmetatable(r) and type(getmetatable(r).__tostring)=='function' then r=tostring(r) else r=json.encode(r) end
+      if (not is.array(r)) and getmetatable(r) and type(getmetatable(r).__tostring)=='function' then r=tostring(r) else ngx.say(inspect(r)); r=json.encode(r) end
       ngx.say(r)
       return ngx.exit(200)
     end
