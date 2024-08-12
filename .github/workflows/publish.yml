@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: jkl1337/gh-actions-lua@v11
       with:
-        luaVersion: ${{ matrix.luaVersion }}
+        luaVersion: "5.1"
     - uses: jkl1337/gh-actions-luarocks@v5
     - name: system dependencies
       run: sudo apt-get update && sudo apt-get install -y ${{ env.SYSDEPS }}
