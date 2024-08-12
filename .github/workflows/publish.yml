@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@master
-    - uses: joelvaneenwyk/gh-actions-lua@v10
+    - uses: joelvaneenwyk/gh-actions-lua@v9
       with:
         luaVersion: "5.1.5"
     - uses: joelvaneenwyk/gh-actions-luarocks@v4
