@@ -10,7 +10,7 @@ __DATA__
 
 === TEST 1: response(true)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response(true) }}
@@ -20,11 +20,11 @@ GET /t
 
 === TEST 2: response(false)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
-error_page 403 404 /404;
-location = /404 { internal; return 200 ""; }
+error_page 403 404 405 500 501 @error;
+location @error { internal; return 200 ""; }
 location /t { content_by_lua_block { return t.nginx.auto.response(false) }}
 --- request
 GET /t
@@ -33,7 +33,7 @@ GET /t
 
 === TEST 3: response(4)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response(4) }}
@@ -45,11 +45,11 @@ GET /t
 
 === TEST 4: response(nil)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
-error_page 403 404 /404;
-location = /404 { internal; return 200 ""; }
+error_page 403 404 405 500 501 @error;
+location @error { internal; return 200 ""; }
 location /t { content_by_lua_block { return t.nginx.auto.response(nil) }}
 --- request
 GET /t
@@ -59,7 +59,7 @@ GET /t
 
 === TEST 5: response(empty string)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response('') }}
@@ -69,7 +69,7 @@ GET /t
 
 === TEST 6: response(some string)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response('some') }}
@@ -80,7 +80,7 @@ some
 
 === TEST 7: response(array)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response(t.array({1,2,3,4})) }}
@@ -91,7 +91,7 @@ GET /t
 
 === TEST 8: response(table array)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response({1,2,3,4}) }}
@@ -102,7 +102,7 @@ GET /t
 
 === TEST 9: response(empty array)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response(t.array()) }}
@@ -113,7 +113,7 @@ GET /t
 
 === TEST 10: response(empty table array)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response({}) }}
@@ -124,7 +124,7 @@ GET /t
 
 === TEST 11: response(object)
 --- http_config
-lua_package_path "../../../lua/?.lua;../../../lua/?/init.lua;;";
+lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response({a="AA", b="BB", c={"x", "y", "z"}}) }}
