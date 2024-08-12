@@ -32,7 +32,7 @@ jobs:
     - name: disable system nginx
       run: sudo systemctl disable nginx && sudo systemctl stop nginx && sudo chmod 666 /var/log/nginx/*
     - name: test deps
-      run: luarocks install inspect
+      run: luarocks install ${{ env.DEV }} t-storage-mongo && luarocks install ${{ env.DEV }} luacheck && luarocks install ${{ env.DEV }} busted
     - name: cpanm dependencies
       run: sudo cpanm ${{ env.CPANDEPS }}
     - name: dependencies
