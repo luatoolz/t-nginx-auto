@@ -16,12 +16,13 @@ jobs:
       LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
     steps:
     - uses: actions/checkout@master
+    - name: system dependencies
+      run: sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y ${{ env.SYSDEPS }}
     - uses: jkl1337/gh-actions-lua@v11
       with:
         luaVersion: "5.1.5"
+        buildCache: false
     - uses: jkl1337/gh-actions-luarocks@v5
-    - name: system dependencies
-      run: sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y ${{ env.SYSDEPS }}
     - name: install upload deps
       run: luarocks install lua-cjson && luarocks install luasec
     - name: publish
