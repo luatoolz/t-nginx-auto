@@ -4,6 +4,7 @@ on:
     branches:
       - main
     paths:
+      - '**publish..yml'
       - '**.rockspec'
   workflow_dispatch:
 jobs:
