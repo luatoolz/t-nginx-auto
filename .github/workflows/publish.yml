@@ -16,7 +16,7 @@ jobs:
       LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
     steps:
     - uses: actions/checkout@master
-    - uses: joelvaneenwyk/gh-actions-lua@v10
+    - uses: joelvaneenwyk/gh-actions-lua@v9
       with:
         luaVersion: "5.1.5"
     - uses: joelvaneenwyk/gh-actions-luarocks@v4
