@@ -9,13 +9,13 @@ on:
   workflow_dispatch:
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@master
-    - uses: jkl1337/gh-actions-lua@v11
+    - uses: joelvaneenwyk/gh-actions-lua@v10
       with:
-        luaVersion: "5.1"
-    - uses: jkl1337/gh-actions-luarocks@v5
+        luaVersion: "5.1.5"
+    - uses: joelvaneenwyk/gh-actions-luarocks@v4
     - name: install upload deps
       run: luarocks install lua-cjson && luarocks install luasec
     - name: publish
