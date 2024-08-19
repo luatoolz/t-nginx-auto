@@ -5,7 +5,7 @@ use Test::Nginx::Socket::Lua;
 repeat_each(1);
 plan tests => 10;
 env_to_nginx('MONGO_HOST=localhost', 'MONGO_PORT=27018');
-no_shuffle();
+#no_shuffle();
 no_long_string();
 no_root_location();
 check_accum_error_log();
