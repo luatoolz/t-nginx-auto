@@ -16,7 +16,7 @@ __DATA__
 === TEST 1: PUT any to /t/data
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -38,7 +38,7 @@ PUT /t/data
 === TEST 2: DELETE /t/data/*
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -59,7 +59,7 @@ DELETE /t/data/*
 === TEST 3: HEAD /t/data
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -82,7 +82,7 @@ HEAD /t/data
 === TEST 4: PUT any2 to /t/data
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -104,7 +104,7 @@ PUT /t/data
 === TEST 5: DELETE /t/data
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -125,7 +125,7 @@ DELETE /t/data
 === TEST 6: HEAD /t/data
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -148,7 +148,7 @@ HEAD /t/data
 === TEST 7: PUT one
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -170,7 +170,7 @@ PUT /t/data
 === TEST 8: HEAD one
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -192,7 +192,7 @@ HEAD /t/data/66909d26cbade70b6b022b9a
 === TEST 9: GET one *
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -215,7 +215,7 @@ GET /t/data
 === TEST 10: HEAD *
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -239,7 +239,7 @@ X-Count: 1
 === TEST 11: PUT second
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -261,7 +261,7 @@ PUT /t/data
 === TEST 12: HEAD * 2
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -285,7 +285,7 @@ X-Count: 2
 === TEST 13: PUT bulk
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -307,7 +307,7 @@ PUT /t/data
 === TEST 14: HEAD * 3
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -331,7 +331,7 @@ X-Count: 7
 === TEST 15: DELETE /t/data (clear)
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -354,7 +354,7 @@ DELETE /t/data
 === TEST 16: DELETE /t/auth
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -377,7 +377,7 @@ DELETE /t/auth
 === TEST 17: PUT bulk auth
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -401,7 +401,7 @@ PUT /t/auth
 === TEST 18: HEAD auth
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -425,7 +425,7 @@ X-Count: 3
 === TEST 19: HEAD /t/auth/46db395df332f18b437d572837d314e421804aaed0f229872ce7d8825d11ff9a
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -448,7 +448,7 @@ HEAD /t/auth/46db395df332f18b437d572837d314e421804aaed0f229872ce7d8825d11ff9a
 === TEST 20: DELETE auth
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
@@ -471,7 +471,7 @@ DELETE /t/auth
 === TEST 21: HEAD auth
 --- http_config
 lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
-init_by_lua_block { require "mongo"; require "t" }
+init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
