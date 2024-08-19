@@ -2,7 +2,7 @@ local require = require
 local type = type
 local ngx = ngx
 
-local t = require "t"
+local t = t or require "t"
 local is = t.is
 
 local response = require "t.nginx.auto.response"
