@@ -6,7 +6,6 @@ local ngx = ngx
 local t = require "t"
 local is = t.is
 local json = t.format.json
-local inspect = require "inspect"
 
 local api = {
   GET=function(r)
@@ -21,16 +20,14 @@ local api = {
       return ngx.exit(200)
     end
     if type(r) == 'table' then
-      if (not is.array(r)) and getmetatable(r) and type(getmetatable(r).__tostring)=='function' then r=tostring(r) else ngx.say(inspect(r)); r=json.encode(r) end
-      ngx.say(r)
+      ngx.say(json(r))
       return ngx.exit(200)
     end
     return ngx.exit(500)
   end,
   HEAD=function(r)
     if type(r) == 'nil' then
-      ngx.header['X-Count'] = 0
-      return ngx.exit(404)
+      r = 0
     end
     if type(r) == 'table' then
       if is.bulk(r) then
