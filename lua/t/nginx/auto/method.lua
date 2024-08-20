@@ -7,8 +7,6 @@ local t = t or require "t"
 local is = t.is
 local mmt = meta.mt
 
-local def = t.def or {}
-
 local response = require "t.nginx.auto.response"
 local crud = require "t.nginx.auto.crud"
 
