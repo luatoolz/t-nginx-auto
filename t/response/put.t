@@ -124,7 +124,7 @@ content_by_lua_block { return t.nginx.auto.response(t.array()) }}
 --- request
 PUT /t
 --- response_body
---- error_code: 500
+--- error_code: 200
 
 === TEST 10: response.PUT(empty table array)
 --- http_config
@@ -139,7 +139,7 @@ content_by_lua_block { return t.nginx.auto.response({}) }}
 --- request
 PUT /t
 --- response_body
---- error_code: 500
+--- error_code: 200
 
 === TEST 11: response.PUT(object)
 --- http_config

@@ -16,9 +16,11 @@ local api = {
 }
 
 return function(o)
+  o=o or t.db.default()
+  assert(o.__objects)
   local method = api[ngx.var.request_method]
   if type(method) == 'string' then method = api[method] end
   if not is.callable(method) then return ngx.exit(501) end
   o=o and o[ngx.var.object] or nil
-  return response(o and method(o) or o)
+  return o and response(method(o)) or ngx.exit(500)
 end

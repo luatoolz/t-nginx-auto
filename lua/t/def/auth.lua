@@ -1,4 +1,5 @@
-local t = require "t"
+local t = t or require "t"
+assert(t)
 
 return {
   token=t.string,
