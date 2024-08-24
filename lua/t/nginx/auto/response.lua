@@ -5,9 +5,8 @@ local ngx = ngx
 
 local t = require "t"
 local is = t.is
-local json = t.format.json
 
-local say
+local say = require "t.nginx.auto.say"
 
 -- possible object types:
 -- job
@@ -18,22 +17,28 @@ local say
 -- table/userdata + mt ?
 -- native lua types?
 
+local _response = function(data, status)
+  if data and data~='' and status==200 then say(data) end
+  return ngx.exit(status)
+end
+
 local api = {
   GET=function(r)
+    local data=r
     if type(r)=='nil' then r=false end
-    if type(r)=='table' then say(json(r)); r=toboolean(r) end
-    if type(r)=='number' then say(tostring(r)); r=true end
-    if type(r)=='string' then if r~='' then say(r) end; r=true end
-    if type(r)=='boolean' then return ngx.exit(r and 200 or 404) end
-    return ngx.exit(500)
+    if type(r)=='table' then r=true end --toboolean(r) end
+    if type(r)=='number' then r=true end
+    if type(r)=='string' then r=true end
+--    if type(r)=='boolean' then return ngx.exit(r and 200 or 404) end
+    return _response(data, type(r)=='boolean' and (r and 200 or 404) or 500)
   end,
   HEAD=function(r)
     if type(r)=='nil' then r=false end
     if type(r)=='table' then r=(is.bulk(r) or is.tonumber(r)) and (tonumber(r) or #r) or toboolean(r) end
     if type(r)=='string' then r=(r~='') end
     if type(r)=='number' then ngx.header['X-Count']=r; r=r>0 end
-    if type(r)=='boolean' then return ngx.exit(r and 200 or 404) end
-    return ngx.exit(500)
+    if type(r)~='boolean' then r=toboolean(r) end
+    return _response(nil, type(r)=='boolean' and (r and 200 or 404) or 500)
   end,
   DELETE=function(r) return ngx.exit(toboolean(r) and 200 or 500) end,
   POST='PUT',
@@ -41,7 +46,7 @@ local api = {
     if type(r)=='table' then r=tonumber(r) or 0; end
     if type(r)=='number' then ngx.header['X-Count']=r; r=true end
     if type(r)~='boolean' then r=toboolean(r) end
-    return ngx.exit(r and 200 or 500)
+    return _response(nil, r and 200 or 500)
   end,
 }
 

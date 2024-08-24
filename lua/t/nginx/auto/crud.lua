@@ -8,7 +8,7 @@ local is = t.is
 local response = require "t.nginx.auto.response"
 
 local api = {
-  POST='PUT',
+  POST='PUT', -- TODO: edit object
   GET=function(o) return o[ngx.var.id] end,
   HEAD=function(o) return o % ngx.var.id end,
   DELETE=function(o) return -o[ngx.var.id] end,
