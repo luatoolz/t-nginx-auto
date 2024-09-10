@@ -9,7 +9,7 @@ __DATA__
 
 === TEST 1: response.PUT(true)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t {
@@ -22,7 +22,7 @@ PUT /t
 
 === TEST 2: response.PUT(false)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -37,7 +37,7 @@ PUT /t
 
 === TEST 3: response.PUT(4)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response(4) }}
@@ -48,7 +48,7 @@ PUT /t
 
 === TEST 4: response.PUT(nil)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -61,7 +61,7 @@ PUT /t
 
 === TEST 5: response.PUT(empty string)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -76,7 +76,7 @@ PUT /t
 
 === TEST 6: response.PUT(some string)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 location /t { content_by_lua_block { return t.nginx.auto.response('some') }}
@@ -87,7 +87,7 @@ PUT /t
 
 === TEST 7: response.PUT(array)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -100,7 +100,7 @@ PUT /t
 
 === TEST 8: response.PUT(table array)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -113,7 +113,7 @@ PUT /t
 
 === TEST 9: response.PUT(empty array)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -128,7 +128,7 @@ PUT /t
 
 === TEST 10: response.PUT(empty table array)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -143,7 +143,7 @@ PUT /t
 
 === TEST 11: response.PUT(object)
 --- http_config
-lua_package_path "../../lua/?.lua;../../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { t = require "t" }
 --- config
 error_page 403 404 405 500 501 @error;

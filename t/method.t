@@ -15,14 +15,14 @@ __DATA__
 
 === TEST 1: HEAD existing method
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;../?.lua;../?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
 location /t { add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
 location ~* ^/t/(?<object>[^\/]+)((/(?<id>[^\/]+))(/(?<method>[^\/]+))?)?/?$ {
-content_by_lua_block { local td=require('meta').loader('testdata'); return t.nginx.auto.method(td.db, td.def) }}}
+content_by_lua_block { local td=require "testdata"; return t.nginx.auto.method(td.db, td.def) }}}
 --- request
 HEAD /t/remote/ping
 --- error_code: 200
@@ -36,14 +36,14 @@ HEAD /t/remote/ping
 
 === TEST 2: HEAD nonexisting method
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;../?.lua;../?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
 location /t { add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
 location ~* ^/t/(?<object>[^\/]+)((/(?<id>[^\/]+))(/(?<method>[^\/]+))?)?/?$ {
-content_by_lua_block { local td=require('meta').loader('testdata'); return t.nginx.auto.method(td.db, td.def) }}}
+content_by_lua_block { local td=require "testdata"; return t.nginx.auto.method(td.db, td.def) }}}
 --- request
 HEAD /t/remote/noneexistent
 --- error_code: 404

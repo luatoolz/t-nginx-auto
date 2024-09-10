@@ -15,7 +15,7 @@ __DATA__
 
 === TEST 1: PUT auth
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -41,7 +41,7 @@ X-Count: 3
 
 === TEST 2: HEAD auth
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -64,7 +64,7 @@ X-Count: 3
 
 === TEST 3: HEAD auth one
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -86,7 +86,7 @@ HEAD /t/auth/95687c9a1a88dd2d552438573dd018748dfff0222c76f085515be2dc1db2afa7
 
 === TEST 4: auth ok
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -110,7 +110,7 @@ ok
 
 === TEST 5: auth fail wrong token
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -133,7 +133,7 @@ X-Token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 === TEST 6: auth fail empty token
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -156,7 +156,7 @@ X-Token:
 
 === TEST 7: auth fail no token
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -177,7 +177,7 @@ GET /t
 
 === TEST 8: DELETE auth
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -198,7 +198,7 @@ DELETE /t/auth
 
 === TEST 9: HEAD auth
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;

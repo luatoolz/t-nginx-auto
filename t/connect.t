@@ -5,7 +5,7 @@ use Test::Nginx::Socket::Lua;
 repeat_each(1);
 plan tests => repeat_each() * blocks() * 5;
 env_to_nginx('MONGO_HOST=localhost', 'MONGO_PORT=27018');
-#no_shuffle();
+no_shuffle();
 no_long_string();
 no_root_location();
 check_accum_error_log();
@@ -15,7 +15,7 @@ __DATA__
 
 === TEST 1: mongodb connect GET
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
@@ -34,7 +34,7 @@ true
 
 === TEST 2: mongodb connect HEAD
 --- http_config
-lua_package_path "../lua/?.lua;../lua/?/init.lua;;";
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
 error_page 403 404 405 500 501 @error;
