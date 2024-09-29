@@ -1,0 +1,1 @@
+require "t.nginx.auto.logger"

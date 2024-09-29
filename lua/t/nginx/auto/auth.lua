@@ -3,8 +3,7 @@ local ngx = ngx
 local t = t or require("t")
 
 return function(o, header)
-  o=o or t.db.default()
-  assert(o.__objects)
+  o=o or t.def
   header=header or 'X-Token'
   local token=ngx.req.get_headers()[header]
   o=o and o.auth or nil

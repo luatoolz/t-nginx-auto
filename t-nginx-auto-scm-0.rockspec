@@ -27,7 +27,6 @@ dependencies = {
 test_dependencies = {
   "busted",
   "luacheck",
-  "t-storage-mongo",
 }
 
 test = {

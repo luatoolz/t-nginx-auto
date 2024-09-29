@@ -4,23 +4,22 @@ local ngx = ngx
 
 local t = t or require "t"
 local is = t.is
+local req=require "t.nginx.auto.request"
+local respond = require "t.nginx.auto.respond"
+local api = require "t.nginx.auto.api"
 
-local response = require "t.nginx.auto.response"
+local to = setmetatable({['']={}},{
+__index=function(self, k) return rawget(self, k) or k end, })
 
-local api = {
+local method = api({
   POST='PUT', -- TODO: edit object
-  GET=function(o) return o[ngx.var.id] end,
-  HEAD=function(o) return o % ngx.var.id end,
-  DELETE=function(o) return -o[ngx.var.id] end,
-  PUT=function(o) ngx.req.read_body(); return o + ngx.req.get_body_data() end,
-}
+  GET=function(o) return o[to[ngx.var.id]] end,
+  HEAD=function(o) return o % to[ngx.var.id] end,
+  DELETE=function(o) return o-to[ngx.var.id] end,
+  PUT=function(o) return o + req.data end,
+})
 
-return function(o)
-  o=o or t.db.default()
-  assert(o.__objects)
-  local method = api[ngx.var.request_method]
-  if type(method) == 'string' then method = api[method] end
-  if not is.callable(method) then return ngx.exit(501) end
-  o=o and o[ngx.var.object] or nil
-  return o and response(method(o)) or ngx.exit(500)
+return function(def)
+  local o=(def or t.def)[ngx.var.object] or ngx.exit(404)
+  return respond(method(o))
 end
