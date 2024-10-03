@@ -1,20 +1,10 @@
 if not ngx then return end
-local tonumber = tonumber
-local require = require
-local type = type
-
-local t = t or require "t"
+local t=t or require "t"
 local is = t.is
-local meta = require "meta"
-local export = t.exporter
-local api = require "t.nginx.auto.api"
--- or setmetatable({},{__call=function(self) end})
-local say = require "t.nginx.auto.say"
+local auto = t.pkg(...)
+local api, say = auto.api, auto.say
 local e = ngx.exit
---local json = require "t.format.json"
-local cache = meta.cache
 
---204 No Content
 local args = {
   bulkresult={
     DELETE={'nRemoved'},
@@ -76,8 +66,6 @@ return api({
         r=a(r)
         data=nil
       end
-    else
-      r=data
     end
 
     if r==false then return e(500) end
@@ -87,6 +75,7 @@ return api({
     end
     if type(r)=='number' then ngx.header['X-Count']=r end
 
+--    if toboolean(r) then say(data) else return e(404) end
     if type(r)~='nil' then if toboolean(r) then say(data) else return e(404) end end
     return e(200)
   end,

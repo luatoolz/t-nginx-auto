@@ -3,170 +3,171 @@ use warnings;
 use Test::Nginx::Socket::Lua;
 
 repeat_each(1);
-plan tests => repeat_each() * blocks() * 6;
-no_long_string();
+plan tests => repeat_each()*blocks()*6 + 3;
+env_to_nginx('MONGO_HOST=localhost', 'MONGO_PORT=27018');
+no_shuffle();
+#no_long_string();
 no_root_location();
 check_accum_error_log();
 run_tests();
 
 __DATA__
 
-=== TEST 1: t.nginx.auto.request.mime GET
+=== TEST 1: HEAD /t/data before
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
-error_page 403 404 405 500 501 @error;
+error_page 400 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
-location = /t {
+location /t {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
-content_by_lua_block { ngx.say(t.nginx.auto.request.mime) }}
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
+content_by_lua_block { return t.nginx.auto.crud() }}}
 --- request
-GET /t
---- more_headers
-Content-Type: application/json
---- error_code: 200
+HEAD /t/data
 --- response_body
-application/x-www-form-urlencoded
+--- timeout: 5s
+--- response_headers
+X-Count: 0
+--- error_code: 404
 --- no_error_log
 [warn]
 [error]
 [alert]
 [emerg]
 
-=== TEST 2: t.nginx.auto.request.mime HEAD
+=== TEST 2: PUT any to /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
-error_page 403 404 405 500 501 @error;
+error_page 400 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
-location = /t {
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
-content_by_lua_block { ngx.header['X-Result']=t.nginx.auto.request.mime }}
+content_by_lua_block { return t.nginx.auto.crud() }}
 --- request
-HEAD /t
---- more_headers
-Content-Type: application/json
+PUT /t/data
+{"x":"any"}
+--- response_body
 --- error_code: 200
+--- timeout: 5s
 --- response_headers
-X-Result: application/x-www-form-urlencoded
 --- no_error_log
 [warn]
 [error]
 [alert]
 [emerg]
 
-=== TEST 3: t.nginx.auto.request.mime DELETE
+=== TEST 3: PUT empty to /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
-error_page 403 404 405 500 501 @error;
+error_page 400 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
-location = /t {
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
-content_by_lua_block { ngx.header['X-Result']=t.nginx.auto.request.mime }}
+content_by_lua_block { return t.nginx.auto.crud() }}
 --- request
-DELETE /t
---- more_headers
-Content-Type: application/json
---- error_code: 200
+PUT /t/data
+--- response_body
+--- error_code: 400
+--- timeout: 5s
 --- response_headers
-X-Result: application/x-www-form-urlencoded
 --- no_error_log
 [warn]
 [error]
 [alert]
 [emerg]
 
-=== TEST 4: t.nginx.auto.request.mime PUT
+=== TEST 4: HEAD /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
-error_page 403 404 405 500 501 @error;
+error_page 400 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
-location = /t {
+location /t {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
-content_by_lua_block { ngx.header['X-Result']=t.nginx.auto.request.mime }}
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
+content_by_lua_block { return t.nginx.auto.crud() }}}
 --- request
-PUT /t
---- more_headers
-Content-Type: application/json
---- error_code: 200
+HEAD /t/data
+--- response_body
+--- timeout: 5s
 --- response_headers
-X-Result: application/json
+X-Count: 1
+--- error_code: 200
 --- no_error_log
 [warn]
 [error]
 [alert]
 [emerg]
 
-=== TEST 5: t.nginx.auto.request.mime POST
+=== TEST 5: DELETE /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
-error_page 403 404 405 500 501 @error;
+error_page 400 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
-location = /t {
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
-content_by_lua_block { ngx.header['X-Result']=t.nginx.auto.request.mime }}
+content_by_lua_block { return t.nginx.auto.crud() }}
 --- request
-POST /t
---- more_headers
+DELETE /t/data
+--- response_body
+--- timeout: 5s
 --- error_code: 200
---- response_headers
-X-Result: application/x-www-form-urlencoded
 --- no_error_log
 [warn]
 [error]
 [alert]
 [emerg]
 
-=== TEST 6: t.nginx.auto.request.mime POST json
+=== TEST 6: HEAD /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
-error_page 403 404 405 500 501 @error;
+error_page 400 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
-location = /t {
+location /t {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
-content_by_lua_block { ngx.header['X-Result']=t.nginx.auto.request.mime }}
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
+content_by_lua_block { return t.nginx.auto.crud() }}}
 --- request
-POST /t
-{"a":"a"}
---- more_headers
---- error_code: 200
+HEAD /t/data
+--- response_body
+--- timeout: 5s
 --- response_headers
-X-Result: application/json
+X-Count: 0
+--- error_code: 404
 --- no_error_log
 [warn]
 [error]
 [alert]
 [emerg]
 
-=== TEST 7: t.nginx.auto.request.mime POST json array
+=== TEST 7: GET /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
 --- config
-error_page 403 404 405 500 501 @error;
+error_page 400 403 404 405 500 501 @error;
 location @error { internal; return 200 ""; }
-location = /t {
+location /t {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
-content_by_lua_block { ngx.header['X-Result']=t.nginx.auto.request.mime }}
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
+content_by_lua_block { return t.nginx.auto.crud() }}}
 --- request
-POST /t
-[{"token":"95687c9a1a88dd2d552438573dd018748dfff0222c76f085515be2dc1db2afa7","role":"root"},
-{"token":"46db395df332f18b437d572837d314e421804aaed0f229872ce7d8825d11ff9a","role":"traffer"},
-{"token":"60879afb54028243bb82726a5485819a8bbcacd1df738439bfdf06bc3ea628d0","role":"panel"}]
---- more_headers
---- error_code: 200
+GET /t/data
+--- response_body
+--- timeout: 5s
 --- response_headers
-X-Result: application/json
+--- error_code: 404
 --- no_error_log
 [warn]
 [error]

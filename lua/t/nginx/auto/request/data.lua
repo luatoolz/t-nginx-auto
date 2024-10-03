@@ -1,7 +1,7 @@
 if not ngx then return end
 local t=t or require "t"
 local is=t.is
-local req=require "t.nginx.auto.request"
+local req=t.pkg(...)
 local ok = {
   POST=true,
   PUT=true,

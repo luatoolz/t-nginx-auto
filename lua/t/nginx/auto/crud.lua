@@ -1,25 +1,24 @@
-local require = require
-local type = type
-local ngx = ngx
+if not ngx then return end
+local t=t or require "t"
+local auto = t.pkg(...)
 
-local t = t or require "t"
-local is = t.is
-local req=require "t.nginx.auto.request"
-local respond = require "t.nginx.auto.respond"
-local api = require "t.nginx.auto.api"
-
-local to = setmetatable({['']={}},{
-__index=function(self, k) return rawget(self, k) or k end, })
+local req, respond, api, var, e =
+  auto.request, auto.respond, auto.api, auto.var, auto.exit
 
 local method = api({
-  POST='PUT', -- TODO: edit object
-  GET=function(o) return o[to[ngx.var.id]] end,
-  HEAD=function(o) return o % to[ngx.var.id] end,
-  DELETE=function(o) return o-to[ngx.var.id] end,
-  PUT=function(o) return o + req.data end,
+  GET=function(o) return o[var.id or {}] end,
+  HEAD=function(o) return o % (var.id or {}) end,
+  DELETE=function(o) return o-(var.id or {}) end,
+  PUT=function(o)
+    if not req.data or (var.id and not o/var.id) then return e(400) end
+    return o + req.data end, -- with valid id, with invalid id
+  POST='PUT',
+--  POST=function(o) if not req.data then return e(400) end; return o + req.data end, -- with valid id, with invalid id
 })
 
-return function(def)
-  local o=(def or t.def)[ngx.var.object] or ngx.exit(404)
+return function(def, noresp)
+  local o=(def or t.def)[var.object] or e(404)
+  if var.id and (not (o/var.id)) then return e(400) end
+  if noresp then return method(o) end
   return respond(method(o))
 end

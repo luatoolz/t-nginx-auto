@@ -2,8 +2,7 @@
 -- default: decide later in t.nginx.auto.respond()
 if not ngx then return end
 local t=t or require "t"
-local is=t.is
-local req=t.nginx.auto.request
+local req=t.pkg('t.nginx.auto').request
 local ok = {
   POST=true,
   PUT=true,

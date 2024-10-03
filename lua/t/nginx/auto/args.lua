@@ -1,6 +1,4 @@
-local require = require
-local ngx = ngx
-local t = t or require("t")
+local t=t or require "t"
 
 -- GET/HEAD/DELETE url args
 -- PUT/POST        url args + parsed body
@@ -25,7 +23,7 @@ local default_response_type={
 
 local api={
   req=function()
-    local headers, err = ngx.req.get_headers(0)
+    local headers, err = ngx.req.get_uri_args(0)
     if err=="truncated" then
       return nil, "truncated"
     end
