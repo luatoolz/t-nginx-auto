@@ -19,6 +19,16 @@ local default_response_type={
 --[[
   url args: ngx.req.get_uri_args()
   post args: ngx.req.get_post_args()
+
+  $content_type
+  $http_headername
+  $is_args “?” if a request line has arguments, or an empty string otherwise
+  $request_id
+  $request_time
+  $status
+  $time_iso8601
+  $time_local
+
 --]]
 
 local api={

@@ -1,2 +1,2 @@
 if not ngx then return end
-return function() return assert(ngx.req.get_headers(0)) or {} end
+return function() return ngx.req.get_headers(0) end
