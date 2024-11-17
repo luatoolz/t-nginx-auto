@@ -4,7 +4,7 @@ use Test::Nginx::Socket::Lua;
 
 repeat_each(1);
 plan tests => repeat_each()*blocks()*6 + 3;
-env_to_nginx('MONGO_HOST=localhost', 'MONGO_PORT=27018');
+env_to_nginx('MONGO_HOST=127.0.0.1', 'MONGO_PORT=27018');
 no_shuffle();
 #no_long_string();
 no_root_location();
@@ -166,13 +166,13 @@ add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
 location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
 content_by_lua_block {
   local v=t.nginx.auto.crud(nil, true)
-  t.nginx.auto.say(t.exporter(v), t.type(v), t.match.basename(t.type(v)), tostring(toboolean(v)))
+  t.nginx.auto.say(t.exporter(v), t.type(v), t.match.basename(t.type(v)), tostring(t.to.boolean(v)))
 }}}
 --- request
 GET /t/data/66909d26cbade70b6b022b9a
 --- response_body
 {"_id":{"$oid":"66909d26cbade70b6b022b9a"},"x":"any"}
-t/def/data
+t/def data
 data
 true
 --- timeout: 5s
@@ -290,13 +290,13 @@ add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
 location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
 content_by_lua_block {
   local v=t.nginx.auto.crud(nil, true)
-  t.nginx.auto.say(t.exporter(v), t.type(v), t.match.basename(t.type(v)), tostring(toboolean(v)))
+  t.nginx.auto.say(t.exporter(v), t.type(v), t.match.basename(t.type(v)), tostring(t.to.boolean(v)))
 }}}
 --- request
 GET /t/data
 --- response_body
 []
-t/array
+array
 array
 false
 --- timeout: 5s

@@ -34,12 +34,12 @@ return api({
     if r==false then return e(500) end
     if type(r)=='table' then
       if is.empty(r) then r=nil end
-      if is.bulk(r) then r=tonumber(r) else r=toboolean(r) end
+      if is.bulk(r) then r=t.to.number(r) else r=t.to.boolean(r) end
     end
     if type(r)=='number' then ngx.header['X-Count']=r end
-    -- string is printed due to toboolean
+    -- string is printed due to t.to.boolean
 
-    if toboolean(r) then say(data) end
+    if t.to.boolean(r) then say(data) end
     return e(200)
   end,
   GET=function(data)
@@ -62,12 +62,12 @@ return api({
     if r==false then return e(500) end
     if type(r)=='table' then
       if is.empty(r) then r=nil end
-      if is.bulk(r) then r=tonumber(r) else r=toboolean(r) end
+      if is.bulk(r) then r=t.to.number(r) else r=t.to.boolean(r) end
     end
     if type(r)=='number' then ngx.header['X-Count']=r end
 
---    if toboolean(r) then say(data) else return e(404) end
-    if type(r)~='nil' then if toboolean(r) then say(data) else return e(404) end end
+--    if t.to.boolean(r) then say(data) else return e(404) end
+    if type(r)~='nil' then if t.to.boolean(r) then say(data) else return e(404) end end
     return e(200)
   end,
   HEAD=function(data)
@@ -88,12 +88,12 @@ return api({
 
     if type(r)=='table' then
       if is.empty(r) then r=nil end
-      if is.bulk(r) then r=tonumber(r) else r=toboolean(r) end
+      if is.bulk(r) then r=t.to.number(r) else r=t.to.boolean(r) end
     end
     if type(r)=='number' then ngx.header['X-Count']=r end
     if type(r)=='string' then r=#r>0 and r or nil end
 
-    return toboolean(r) and e(200) or e(404)
+    return t.to.boolean(r) and e(200) or e(404)
   end,
   DELETE=function(data)
     local r=data
@@ -120,7 +120,7 @@ return api({
 
     if type(r)=='table' then
       if is.empty(r) then r=nil else
-      if is.bulk(r) then r=tonumber(r) else r=toboolean(r) end end
+      if is.bulk(r) then r=t.to.number(r) else r=t.to.boolean(r) end end
     end
     if type(r)=='number' then ngx.header['X-Count']=r end
     if r==0 then return e(404) end
@@ -153,7 +153,7 @@ return api({
     if r==false then return e(500) end
     if type(r)=='table' then
       if is.empty(r) then r=nil end
-      if is.bulk(r) then r=tonumber(r) else r=toboolean(r) end
+      if is.bulk(r) then r=t.to.number(r) else r=t.to.boolean(r) end
     end
     if type(r)=='number' then ngx.header['X-Count']=r end
     if type(r)=='string' then r=#r>0 and r or nil end

@@ -26,7 +26,7 @@ POST /t
 {"a":"a"}
 --- more_headers
 --- response_body
-t/format/json
+json
 --- error_code: 200
 --- response_headers
 --- no_error_log
@@ -51,7 +51,7 @@ POST /t
 {"token":"46db395df332f18b437d572837d314e421804aaed0f229872ce7d8825d11ff9a","role":"traffer"},
 {"token":"60879afb54028243bb82726a5485819a8bbcacd1df738439bfdf06bc3ea628d0","role":"panel"}]
 --- response_body
-t/format/json
+json
 --- more_headers
 --- error_code: 200
 --- response_headers

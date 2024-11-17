@@ -21,7 +21,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods(nil)) }
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 2: is.http_request_methods nil empty
 --- http_config
@@ -35,7 +35,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods()) }}
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 3: is.http_request_methods boolean
 --- http_config
@@ -49,7 +49,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods(true)) 
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 4: is.http_request_methods number
 --- http_config
@@ -63,7 +63,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods(0)) }}
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 5: is.http_request_methods empty string
 --- http_config
@@ -77,7 +77,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods('')) }}
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 6: is.http_request_methods some string
 --- http_config
@@ -91,7 +91,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods('some')
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 7: is.http_request_methods empty table
 --- http_config
@@ -105,7 +105,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods({})) }}
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 8: is.http_request_methods wrong bulk table
 --- http_config
@@ -119,7 +119,7 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods({true})
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
 
 === TEST 9: is.http_request_methods wrong object table
 --- http_config
@@ -133,4 +133,4 @@ location = /t { content_by_lua_block { ngx.say(t.is.http_request_methods({some=t
 GET /t
 --- error_code: 200
 --- response_body
-false
+nil
