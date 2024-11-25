@@ -11,6 +11,7 @@ local wrong={
 }
 local ok = {
   [0]=true,
+  ['000']=true,
   GET=true,
   PUT=true,
   POST=true,
