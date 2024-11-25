@@ -31,17 +31,18 @@ return function(def)
       -- ...
     end
     if is.defitem(found) then
-      local callable=found[m]
-      if is.callable(m) then
-        return respond(method(found, callable))
+      local f = o.__action[m]
+      if is.callable(f) then
+        return respond(method(found, f))
       end
     end
     return e(501)
   end
   m=m or id
   if m then
-    if is.callable(o.__action[m]) then
-      return respond(method(o, o.__action[m]))
+    local f = o.__action[m]
+    if is.callable(f) then
+      return respond(method(o, f))
     end
   else
     m='__'

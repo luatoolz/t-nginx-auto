@@ -9,10 +9,6 @@ local wrong={
   ['CFunction']=true,
   ['function']=true,
 }
---local okstatus = {
---  [0]=true,
---  [200]=true,
---}
 local ok = {
   [0]=true,
   GET=true,
