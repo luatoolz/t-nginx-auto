@@ -27,7 +27,7 @@ GET /t
 Accept: application/json
 --- error_code: 200
 --- response_headers
-X-Result:
+X-Result: application/json
 --- no_error_log
 [warn]
 [error]

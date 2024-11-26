@@ -3,7 +3,7 @@ use warnings;
 use Test::Nginx::Socket::Lua;
 
 repeat_each(1);
-plan tests => repeat_each() * (3*6 + 2*2 + 2);
+plan tests => repeat_each() * (3*6 + 2*2 + 4);
 no_long_string();
 no_root_location();
 check_accum_error_log();
@@ -142,4 +142,23 @@ location = /t { content_by_lua_block {
 GET /t
 --- response_body
 {"_id":{"$oid":"66909d26cbade70b6b022b9a"}}
+--- error_code: 200
+
+=== TEST 7: t.nginx.auto.say({...})
+--- http_config
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
+init_by_lua_block { require "t" }
+--- config
+location = /t { content_by_lua_block {
+  local say = t.nginx.auto.say
+  say({'a','b','c'})
+}}
+--- request
+GET /t
+--- more_headers
+Accept: text/plain
+--- response_body
+a
+b
+c
 --- error_code: 200

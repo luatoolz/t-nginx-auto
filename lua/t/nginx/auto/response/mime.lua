@@ -4,6 +4,7 @@ if not ngx then return end
 local t=t or require "t"
 local req=t.pkg('t.nginx.auto').request
 local ok = {
+  GET=true,
   POST=true,
   PUT=true,
 }
