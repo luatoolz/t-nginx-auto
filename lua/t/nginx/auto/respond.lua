@@ -62,7 +62,7 @@ return api({
     if r==false then return e(500) end
     if type(r)=='table' then
       if is.empty(r) then r=nil end
-      if is.bulk(r) then r=t.to.number(r) else r=t.to.boolean(r) end
+      if is.bulk(r) then r=t.to.number(r) or t.to.boolean(r) else r=t.to.boolean(r) end
     end
     if type(r)=='number' then ngx.header['X-Count']=r end
 
