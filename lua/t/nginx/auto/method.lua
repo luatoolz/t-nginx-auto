@@ -5,13 +5,6 @@ local auto=t.pkg(...)
 local req, respond, api, var, e, crud =
   auto.request, auto.respond, auto.api, auto.var, auto.exit, auto.crud
 
---local e = ngx.exit
---local req=require "t.nginx.auto.request"
---local respond = require "t.nginx.auto.respond"
---local crud = require "t.nginx.auto.crud"
---local api = require "t.nginx.auto.api"
---local var = require "t.nginx.auto.var"
-
 local method = api({
   POST=function(o, m) return m(o, req.data) end,
   GET=function(o, m) return m(o) end,
@@ -27,11 +20,13 @@ return function(def)
 
   if id and m then
     local found = o[id]
-    if is.array(found) then
-      -- ...
+    local f = o.__action[m]
+    if is.bulk(found) then
+      if is.callable(f) then
+        return respond(found * function(it) return method(it, f) end)
+      end
     end
     if is.defitem(found) then
-      local f = o.__action[m]
       if is.callable(f) then
         return respond(method(found, f))
       end
@@ -45,9 +40,9 @@ return function(def)
       return respond(method(o, f))
     end
   else
-    m='__'
-    if is.callable(o.__action[m]) then
-      return respond(method(o, o.__action[m]))
+    local f = o.__action.__
+    if is.callable(f) then
+      return respond(method(o, f))
     end
   end
   return crud(def)
