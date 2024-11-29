@@ -8,6 +8,7 @@ return api({
   PUT=function(data)
     local r=data
 
+    if type(r)=='function' then return say(r) end
     if type(r)=='table' and getmetatable(r) then
       local id=t.match.basename(t.type(r))
       local action={
@@ -46,6 +47,7 @@ return api({
     local r=data
 
     if type(r)=='nil' then return e(404) end
+    if type(r)=='function' then return say(r) end
     if type(r)=='table' and getmetatable(r) then
       local id=t.match.basename(t.type(r))
       local action={
@@ -129,6 +131,7 @@ return api({
     local r=data
 
     if type(r)=='nil' then return e(404) end
+    if type(r)=='function' then return say(r) end
     if type(r)=='table' and getmetatable(r) then
       local id=t.match.basename(t.type(r))
       local action={

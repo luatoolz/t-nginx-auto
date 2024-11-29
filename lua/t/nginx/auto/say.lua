@@ -2,7 +2,9 @@ if not ngx then return end
 local t=t or require "t"
 local export=t.exporter
 local auto = t.pkg(...)
-local resp = auto.response
+local resp, e =
+  auto.response,
+  auto.exit
 local json = t.format.json
 local wrong={
   ['table']=true,
@@ -18,19 +20,43 @@ local ok = {
   PUT=true,
   POST=true,
 }
-local function _say(data)
+local function _say(data, __isjson)
   local r=data
+
+  -- always objects iterator
+  -- todo: writer
+  if type(r)=='function' then
+    local isjson = resp.mime=='application/json'
+    local b=r()
+    if b then
+      if isjson then ngx.say("[") end
+      _say(b, isjson)
+      b=r()
+    end
+    while b do
+      if isjson then ngx.say(",") end
+      _say(b, isjson)
+      b=r()
+    end
+    if isjson then ngx.say("\n]") end
+    return e(200)
+  end
+
   if type(r)=='nil' or type(r)=='boolean' then return end
   if (type(r)=='table' or type(r)=='userdata') then r=export(r) end
   if type(r)=='table' and not getmetatable(r) then
     if resp.mime=='text/plain' and #r>0 then r=table.concat(r, "\n") else r=json(r) end
+    if __isjson then ngx.print(r); return end
   end
-  if wrong[type(r)] then ngx.exit(500); assert(nil, 't.nginx.auto.say: wrong type: ' .. type(r)) end
-  if type(r)=='number' then r=tostring(r) end
-  if type(r)=='string' and r~='' then ngx.say(r) end
+  if wrong[type(r)] then e(500); assert(nil, 't.nginx.auto.say: wrong type: ' .. type(r)) end
+--  if type(r)=='number' then r=tostring(r) end
+  if type(r)=='number' then if __isjson then ngx.print(r) else ngx.say(r) end end
+  if type(r)=='string' and r~='' then
+    if __isjson then ngx.print(json(r)) else ngx.say(r) end
+  end
 end
 return function(...)
   if ok[ngx.var.request_method] and (not ngx.headers_sent) and ok[ngx.status] then
-    for i=1,select('#', ...) do _say(select(i, ...)) end
+    table.map({...}, _say)
   end
 end

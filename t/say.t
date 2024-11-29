@@ -3,7 +3,7 @@ use warnings;
 use Test::Nginx::Socket::Lua;
 
 repeat_each(1);
-plan tests => repeat_each() * (3*6 + 2*2 + 4);
+plan tests => repeat_each() * 34;
 no_long_string();
 no_root_location();
 check_accum_error_log();
@@ -161,4 +161,86 @@ Accept: text/plain
 a
 b
 c
+--- error_code: 200
+
+=== TEST 8: t.nginx.auto.say(it)
+--- http_config
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
+init_by_lua_block { require "t" }
+--- config
+location = /t { content_by_lua_block {
+  local say = t.nginx.auto.say
+  say(table.iter({{'a'},{'b'},{'c'}}))
+}}
+--- request
+GET /t
+--- more_headers
+Accept: text/plain
+--- response_body
+a
+b
+c
+--- error_code: 200
+
+=== TEST 9: t.nginx.auto.say(it)
+--- http_config
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
+init_by_lua_block { require "t" }
+--- config
+location = /t { content_by_lua_block {
+  local say = t.nginx.auto.say
+  say(table.iter({{m='a'},{m='b'},{m='c'}}))
+}}
+--- request
+GET /t
+--- more_headers
+Accept: application/json
+--- response_body
+[
+{"m":"a"},
+{"m":"b"},
+{"m":"c"}
+]
+--- error_code: 200
+
+=== TEST 10: t.nginx.auto.say(it)
+--- http_config
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
+init_by_lua_block { require "t" }
+--- config
+location = /t { content_by_lua_block {
+  local say = t.nginx.auto.say
+  say(table.iter({'a','b','c'}))
+}}
+--- request
+GET /t
+--- more_headers
+Accept: application/json
+--- response_body
+[
+"a",
+"b",
+"c"
+]
+--- error_code: 200
+
+=== TEST 11: t.nginx.auto.say(it)
+--- http_config
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
+init_by_lua_block { require "t" }
+--- config
+location = /t { content_by_lua_block {
+  local say = t.nginx.auto.say
+  say(table.iter({111,222,333}))
+}}
+--- request
+GET /t
+--- more_headers
+Accept: application/json
+--- response_body
+[
+111,
+222,
+333
+]
 --- error_code: 200
