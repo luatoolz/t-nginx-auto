@@ -3,7 +3,7 @@ use warnings;
 use Test::Nginx::Socket::Lua;
 
 repeat_each(1);
-plan tests => 66;
+plan tests => 72;
 env_to_nginx('MONGO_HOST=127.0.0.1', 'MONGO_PORT=27018');
 no_shuffle();
 no_root_location();
@@ -272,7 +272,6 @@ location = /t {
     t.nginx.auto.auth()
   }
   content_by_lua_block {
-    t.def.auth[{}]=nil
     return t.nginx.auto.respond('ok')
   }
 }
@@ -283,6 +282,27 @@ X-Token:
 --- error_code: 403
 --- response_body
 
+--- no_error_log
+[warn]
+[error]
+[alert]
+[emerg]
+
+=== TEST 12: DELETE auth
+--- http_config
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
+init_by_lua_block { require "t" }
+--- config
+error_page 403 404 405 500 501 @error;
+location @error { internal; return 200 ""; }
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
+add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
+content_by_lua_block { return t.nginx.auto.crud() }}
+--- request
+DELETE /t/auth
+--- response_body
+--- error_code: 200
+--- timeout: 5s
 --- no_error_log
 [warn]
 [error]
