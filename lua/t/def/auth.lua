@@ -1,6 +1,6 @@
 local t=t or require "t"
 return setmetatable({
-  token=t.match.x64,
+  token=t.match.token,
   role='',
   _='token',
   [true]='token role',
