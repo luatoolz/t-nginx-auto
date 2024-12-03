@@ -2,11 +2,16 @@ if not ngx then return end
 local t=t or require "t"
 local auto = t.pkg(...)
 
-local req, respond, api, var, e =
-  auto.request, auto.respond, auto.api, auto.var, auto.exit
+local req, respond, api, var, e, options =
+  auto.request, auto.respond, auto.api,
+  auto.var, auto.exit, auto.options
 
 local method = api({
-  GET=function(o) return o[var.id or {}] end,
+  GET=function(o)
+    local as=true
+    local rv=o[{var.id or {}, options(), as}]
+    return rv
+  end,
   HEAD=function(o) return o % (var.id or {}) end,
   DELETE=function(o) return o-(var.id or {}) end,
   PUT=function(o)

@@ -140,7 +140,7 @@ location @error { internal; return 200 ""; }
 location /t {
 add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
 location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
-content_by_lua_block { t.nginx.auto.say(t.nginx.auto.crud(nil, true)) }}}
+content_by_lua_block { t.nginx.auto.say(t.array(t.nginx.auto.crud(nil, true))) }}}
 --- request
 GET /t/data
 --- response_body
@@ -268,10 +268,9 @@ content_by_lua_block { t.nginx.auto.say(t.nginx.auto.crud(nil, true)) }}}
 --- request
 GET /t/data
 --- response_body
-[]
 --- timeout: 5s
 --- response_headers
---- error_code: 200
+--- error_code: 404
 --- no_error_log
 [warn]
 [error]
@@ -290,6 +289,7 @@ add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
 location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
 content_by_lua_block {
   local v=t.nginx.auto.crud(nil, true)
+  if type(v)=='function' then v=t.array(v) end
   t.nginx.auto.say(t.exporter(v), t.type(v), t.match.basename(t.type(v)), tostring(t.to.boolean(v)))
 }}}
 --- request

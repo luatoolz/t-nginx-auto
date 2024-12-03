@@ -26,19 +26,23 @@ local function _say(data, __isjson)
   -- always objects iterator
   -- todo: writer
   if type(r)=='function' then
-    local isjson = resp.mime=='application/json'
+    local mime = resp.mime or 'application/json'
+    local isjson = __isjson or mime=='application/json'
+
     local b=r()
     if b then
-      if isjson then ngx.say("[") end
+      if isjson then ngx.print("[") end
       _say(b, isjson)
       b=r()
+    else
+      return e(404)
     end
     while b do
       if isjson then ngx.say(",") end
       _say(b, isjson)
       b=r()
     end
-    if isjson then ngx.say("\n]") end
+    if isjson then ngx.say("]") end
     return e(200)
   end
 

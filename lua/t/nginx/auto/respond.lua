@@ -66,9 +66,9 @@ return api({
       if is.empty(r) then r=nil end
       if is.bulk(r) then r=t.to.number(r) or t.to.boolean(r) else r=t.to.boolean(r) end
     end
-    if type(r)=='number' then ngx.header['X-Count']=r end
-
+--    if type(r)=='number' then ngx.header['X-Count']=r end
 --    if t.to.boolean(r) then say(data) else return e(404) end
+
     if type(r)~='nil' then if t.to.boolean(r) then say(data) else return e(404) end end
     return e(200)
   end,

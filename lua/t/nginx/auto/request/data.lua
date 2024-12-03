@@ -11,8 +11,4 @@ return function()
   local fmt = req.format
   return fmt and type(fmt)=='table' and is.callable(fmt.decode)
     and fmt.decode(req.body) or req.body
---  if not fmt then return req.body end
---  if type(fmt)=='table' and is.callable(fmt.decode) then return fmt.decode(req.body) end
---  assert(type(fmt.decode)=='function', 'no fmt.decode')
---  if fmt then return fmt.decode(req.body) or req.body end
 end

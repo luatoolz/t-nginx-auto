@@ -170,13 +170,15 @@ init_by_lua_block { require "t" }
 --- config
 location = /t { content_by_lua_block {
   local say = t.nginx.auto.say
-  say(table.iter({{'a'},{'b'},{'c'}}))
+  local resp = t.nginx.auto.response
+  say(resp.mime, table.iter({{'a'},{'b'},{'c'}}))
 }}
 --- request
 GET /t
 --- more_headers
 Accept: text/plain
 --- response_body
+text/plain
 a
 b
 c
@@ -196,11 +198,9 @@ GET /t
 --- more_headers
 Accept: application/json
 --- response_body
-[
-{"m":"a"},
+[{"m":"a"},
 {"m":"b"},
-{"m":"c"}
-]
+{"m":"c"}]
 --- error_code: 200
 
 === TEST 10: t.nginx.auto.say(it)
@@ -217,11 +217,9 @@ GET /t
 --- more_headers
 Accept: application/json
 --- response_body
-[
-"a",
+["a",
 "b",
-"c"
-]
+"c"]
 --- error_code: 200
 
 === TEST 11: t.nginx.auto.say(it)
@@ -238,9 +236,7 @@ GET /t
 --- more_headers
 Accept: application/json
 --- response_body
-[
-111,
+[111,
 222,
-333
-]
+333]
 --- error_code: 200

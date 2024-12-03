@@ -3,7 +3,7 @@ use warnings;
 use Test::Nginx::Socket::Lua;
 
 repeat_each(1);
-plan tests => repeat_each() * blocks() * 7;
+plan tests => repeat_each()*blocks()*7 - 1;
 no_long_string();
 no_root_location();
 check_accum_error_log();
@@ -28,7 +28,6 @@ GET /t
 --- response_body
 --- error_code: 404
 --- response_headers
-X-Count: 0
 --- no_error_log
 [warn]
 [error]

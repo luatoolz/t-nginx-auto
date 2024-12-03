@@ -3,9 +3,10 @@ use warnings;
 use Test::Nginx::Socket::Lua;
 
 repeat_each(1);
-plan tests => 128;
+plan tests => 127;
 env_to_nginx('MONGO_HOST=127.0.0.1', 'MONGO_PORT=27018');
 no_shuffle();
+no_long_string();
 no_root_location();
 check_accum_error_log();
 run_tests();
@@ -340,10 +341,10 @@ content_by_lua_block { return t.nginx.auto.crud() }}}
 --- request
 GET /t/auth/root
 --- response_body
-[{"_id":{"$oid":"66ef5a258aa5f11c0c094b25"},"role":"root","token":"95687c9a1a88dd2d552438573dd018748dfff0222c76f085515be2dc1db2afa7"},{"_id":{"$oid":"66ef5a258aa5f11c0c094b28"},"role":"root","token":"e150a1ec81e8e93e1eae2c3a77e66ec6dbd6a3b460f89c1d08aecf422ee401a0"}]
+[{"_id":{"$oid":"66ef5a258aa5f11c0c094b25"},"role":"root","token":"95687c9a1a88dd2d552438573dd018748dfff0222c76f085515be2dc1db2afa7"},
+{"_id":{"$oid":"66ef5a258aa5f11c0c094b28"},"role":"root","token":"e150a1ec81e8e93e1eae2c3a77e66ec6dbd6a3b460f89c1d08aecf422ee401a0"}]
 --- timeout: 5s
 --- response_headers
-X-Count: 2
 --- error_code: 200
 --- no_error_log
 [warn]

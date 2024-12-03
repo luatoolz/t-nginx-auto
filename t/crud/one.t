@@ -13,7 +13,28 @@ run_tests();
 
 __DATA__
 
-=== TEST 1: HEAD /t/data before
+=== TEST 1: DELETE /t/data
+--- http_config
+lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
+init_by_lua_block { require "t" }
+--- config
+error_page 400 403 404 405 500 501 @error;
+location @error { internal; return 200 ""; }
+location ~* ^/t/(?<object>[^\/]+)(/(?<id>[^\/]+))?/?$ {
+add_header Allow "GET, PUT, POST, HEAD, DELETE" always;
+content_by_lua_block { return t.nginx.auto.crud() }}
+--- request
+DELETE /t/data
+--- response_body
+--- timeout: 5s
+--- error_code: 200
+--- no_error_log
+[warn]
+[error]
+[alert]
+[emerg]
+
+=== TEST 2: HEAD /t/data before
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
@@ -37,7 +58,7 @@ X-Count: 0
 [alert]
 [emerg]
 
-=== TEST 2: PUT any to /t/data
+=== TEST 3: PUT any to /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
@@ -60,7 +81,7 @@ PUT /t/data
 [alert]
 [emerg]
 
-=== TEST 3: PUT empty to /t/data
+=== TEST 4: PUT empty to /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
@@ -82,7 +103,7 @@ PUT /t/data
 [alert]
 [emerg]
 
-=== TEST 4: HEAD /t/data
+=== TEST 5: HEAD /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
@@ -106,7 +127,7 @@ X-Count: 1
 [alert]
 [emerg]
 
-=== TEST 5: DELETE /t/data
+=== TEST 6: DELETE /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
@@ -127,7 +148,7 @@ DELETE /t/data
 [alert]
 [emerg]
 
-=== TEST 6: HEAD /t/data
+=== TEST 7: HEAD /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
@@ -151,7 +172,7 @@ X-Count: 0
 [alert]
 [emerg]
 
-=== TEST 7: GET /t/data
+=== TEST 8: GET /t/data
 --- http_config
 lua_package_path "lua/?.lua;lua/?/init.lua;?.lua;?/init.lua;;";
 init_by_lua_block { require "t" }
