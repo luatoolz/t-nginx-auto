@@ -2,9 +2,7 @@ if not ngx then return end
 local t=t or require "t"
 local export=t.exporter
 local auto = t.pkg(...)
-local resp, e =
-  auto.response,
-  auto.exit
+local e = auto.exit
 local json = t.format.json
 local wrong={
   ['table']=true,
@@ -22,12 +20,12 @@ local ok = {
 }
 local function _say(data, __isjson)
   local r=data
+  local mime = auto.mime()
 
   -- always objects iterator
   -- todo: writer
   if type(r)=='function' then
-    local mime = resp.mime or 'application/json'
-    local isjson = __isjson or mime=='application/json'
+    local isjson = mime=='application/json'
 
     local b=r()
     if b then
@@ -49,7 +47,7 @@ local function _say(data, __isjson)
   if type(r)=='nil' or type(r)=='boolean' then return end
   if (type(r)=='table' or type(r)=='userdata') then r=export(r) end
   if type(r)=='table' and not getmetatable(r) then
-    if resp.mime=='text/plain' and #r>0 then r=table.concat(r, "\n") else r=json(r) end
+    if mime=='text/plain' and #r>0 then r=table.concat(r, "\n") else r=json(r) end
     if __isjson then ngx.print(r); return end
   end
   if wrong[type(r)] then e(500); assert(nil, 't.nginx.auto.say: wrong type: ' .. type(r)) end

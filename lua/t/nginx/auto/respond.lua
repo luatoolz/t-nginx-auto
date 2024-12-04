@@ -7,6 +7,7 @@ local api, say, e = auto.api, auto.say, auto.exit
 return api({
   PUT=function(data)
     local r=data
+    auto.mime(true)
 
     if type(r)=='function' then return say(r) end
     if type(r)=='table' and getmetatable(r) then
@@ -45,6 +46,7 @@ return api({
   end,
   GET=function(data)
     local r=data
+    auto.mime(true)
 
     if type(r)=='nil' then return e(404) end
     if type(r)=='function' then return say(r) end
@@ -129,6 +131,7 @@ return api({
   end,
   POST=function(data)
     local r=data
+    auto.mime(true)
 
     if type(r)=='nil' then return e(404) end
     if type(r)=='function' then return say(r) end
