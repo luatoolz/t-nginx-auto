@@ -21,6 +21,7 @@ return function(def)
   if id and m then
     local found = o[id]
     local f = o.__action[m]
+    -- TODO: operate iterators
     if is.bulk(found) then
       if is.callable(f) then
         return respond(found * function(it) return method(it, f) end)
@@ -40,7 +41,7 @@ return function(def)
       return respond(method(o, f))
     end
   else
-    local f = o.__action.__
+    local f = o.__action.default
     if is.callable(f) then
       return respond(method(o, f))
     end
