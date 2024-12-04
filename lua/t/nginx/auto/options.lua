@@ -1,7 +1,12 @@
 local t=t or require "t"
 local auto = t.pkg(...)
 local req = auto.request
-local options = t.def.options
+local fields = t.fields
+
+local options = fields{
+  limit=t.to.izpositive,
+  skip=t.to.izpositive,
+}
 
 return function()
   local args=req.uriargs or {}
