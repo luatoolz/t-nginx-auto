@@ -1,6 +1,6 @@
 local t=t or require "t"
 local auto = t.pkg(...)
-local req = auto.request
+local req = auto.request()
 local lazy=false
 
 return function(o, header)

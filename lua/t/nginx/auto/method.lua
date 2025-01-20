@@ -3,7 +3,7 @@ local is=t.is
 local auto=t.pkg(...)
 
 local req, respond, api, var, e, crud =
-  auto.request, auto.respond, auto.api, auto.var, auto.exit, auto.crud
+  auto.request(), auto.respond, auto.api, auto.var, auto.exit, auto.crud
 
 local method = api({
   POST=function(o, m) return m(o, req.data) end,

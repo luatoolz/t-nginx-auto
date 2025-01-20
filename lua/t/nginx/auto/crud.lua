@@ -3,7 +3,7 @@ local t=t or require "t"
 local auto = t.pkg(...)
 
 local req, respond, api, var, e, options =
-  auto.request, auto.respond, auto.api,
+  auto.request(), auto.respond, auto.api,
   auto.var, auto.exit, auto.options
 
 local method = api({
